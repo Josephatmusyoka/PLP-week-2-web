@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Media Page</title>
+    
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Background Image with Overlay */
+        body {
+            background: url("files/_DSC6412.jpg") no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 1;
+        }
+
+        /* Main Container */
+        .media-container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 850px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #ddd;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* Flexbox for Side by Side Layout */
+        .media-wrapper {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Media Sections */
+        .media-section {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        /* Video */
+        video {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Audio with Background Image */
+        .audio-container {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            background: url("files/photo-1536599018102-9f803c140fc1.jpeg") no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        audio {
+            width: 80%;
+        }
+
+        /* Play Buttons */
+        .btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            margin-top: 10px;
+            font-weight: 600;
+            display: block;
+            width: 80%;
+            margin: 10px auto;
+        }
+
+        .btn.pause {
+            background: #e74c3c;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .media-container {
+                width: 100%;
+                padding: 15px;
+            }
+
+            .media-wrapper {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            p {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="media-container">
+        <h1>🎶 Welcome to Your Media Hub 🎬</h1>
+        <p>Enjoy high-quality music and video content. Click the play buttons to start!</p>
+
+        <div class="media-wrapper">
+            <!-- Audio Section -->
+            <div class="media-section">
+                <h2 style="color: white;">🎵 Audio Player</h2>
+                <p>Listen to relaxing music and enhance your mood.</p>
+                <div class="audio-container">
+                    <audio id="audioPlayer" controls>
+                        <source src="files/godwill-babette---umenibeba.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+                <button class="btn" id="audioBtn" onclick="toggleAudio()">▶ Play Audio</button>
+            </div>
+
+            <!-- Video Section -->
+            <div class="media-section">
+                <h2 style="color: white;">🎬 Video Player</h2>
+                <p>Watch stunning visuals and entertaining videos.</p>
+                <video id="videoPlayer" controls>
+                    <source src="files/VID-20240618-WA0004.mp4" type="video/mp4">
+                </video>
+                <button class="btn" id="videoBtn" onclick="toggleVideo()">▶ Play Video</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get media elements
+        const audio = document.getElementById("audioPlayer");
+        const video = document.getElementById("videoPlayer");
+        const audioBtn = document.getElementById("audioBtn");
+        const videoBtn = document.getElementById("videoBtn");
+
+        // Function to update button states
+        function updateAudioButton() {
+            if (audio.paused) {
+                audioBtn.textContent = "▶ Play Audio";
+                audioBtn.classList.remove("pause");
+            } else {
+                audioBtn.textContent = "⏸ Pause Audio";
+                audioBtn.classList.add("pause");
+            }
+        }
+
+        function updateVideoButton() {
+            if (video.paused) {
+                videoBtn.textContent = "▶ Play Video";
+                videoBtn.classList.remove("pause");
+            } else {
+                videoBtn.textContent = "⏸ Pause Video";
+                videoBtn.classList.add("pause");
+            }
+        }
+
+        // Function to toggle audio
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+            updateAudioButton();
+        }
+
+        // Function to toggle video
+        function toggleVideo() {
+            if (video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
+            updateVideoButton();
+        }
+
+        // Event Listeners for button clicks
+        audioBtn.addEventListener("click", toggleAudio);
+        videoBtn.addEventListener("click", toggleVideo);
+
+        // Event Listeners for media controls
+        audio.addEventListener("play", updateAudioButton);
+        audio.addEventListener("pause", updateAudioButton);
+        audio.addEventListener("ended", updateAudioButton);
+
+        video.addEventListener("play", updateVideoButton);
+        video.addEventListener("pause", updateVideoButton);
+        video.addEventListener("ended", updateVideoButton);
+    </script>
+</body>
+</html>
