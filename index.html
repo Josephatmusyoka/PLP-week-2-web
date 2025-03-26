@@ -131,6 +131,12 @@
             background: #e74c3c;
         }
 
+        /* Hover Effect */
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .media-container {
@@ -167,7 +173,7 @@
                         <source src="files/godwill-babette---umenibeba.mp3" type="audio/mpeg">
                     </audio>
                 </div>
-                <button class="btn" id="audioBtn" onclick="toggleAudio()">▶ Play Audio</button>
+                <button class="btn" id="audioBtn">▶ Play Audio</button>
             </div>
 
             <!-- Video Section -->
@@ -177,7 +183,7 @@
                 <video id="videoPlayer" controls>
                     <source src="files/VID-20240618-WA0004.mp4" type="video/mp4">
                 </video>
-                <button class="btn" id="videoBtn" onclick="toggleVideo()">▶ Play Video</button>
+                <button class="btn" id="videoBtn">▶ Play Video</button>
             </div>
         </div>
     </div>
@@ -190,23 +196,15 @@
         const videoBtn = document.getElementById("videoBtn");
 
         // Function to update button states
-        function updateAudioButton() {
-            if (audio.paused) {
-                audioBtn.textContent = "▶ Play Audio";
-                audioBtn.classList.remove("pause");
+        function updateButton(button, media, playText, pauseText) {
+            if (media.paused) {
+                button.innerHTML = "▶ " + playText;
+                button.classList.remove("pause");
+                button.classList.add("play");
             } else {
-                audioBtn.textContent = "⏸ Pause Audio";
-                audioBtn.classList.add("pause");
-            }
-        }
-
-        function updateVideoButton() {
-            if (video.paused) {
-                videoBtn.textContent = "▶ Play Video";
-                videoBtn.classList.remove("pause");
-            } else {
-                videoBtn.textContent = "⏸ Pause Video";
-                videoBtn.classList.add("pause");
+                button.innerHTML = "⏸ " + pauseText;
+                button.classList.remove("play");
+                button.classList.add("pause");
             }
         }
 
@@ -217,7 +215,6 @@
             } else {
                 audio.pause();
             }
-            updateAudioButton();
         }
 
         // Function to toggle video
@@ -227,21 +224,20 @@
             } else {
                 video.pause();
             }
-            updateVideoButton();
         }
 
         // Event Listeners for button clicks
         audioBtn.addEventListener("click", toggleAudio);
         videoBtn.addEventListener("click", toggleVideo);
 
-        // Event Listeners for media controls
-        audio.addEventListener("play", updateAudioButton);
-        audio.addEventListener("pause", updateAudioButton);
-        audio.addEventListener("ended", updateAudioButton);
+        // Event Listeners for media controls (Ensures buttons sync with controls)
+        audio.addEventListener("play", () => updateButton(audioBtn, audio, "Play Audio", "Pause Audio"));
+        audio.addEventListener("pause", () => updateButton(audioBtn, audio, "Play Audio", "Pause Audio"));
+        audio.addEventListener("ended", () => updateButton(audioBtn, audio, "Play Audio", "Pause Audio"));
 
-        video.addEventListener("play", updateVideoButton);
-        video.addEventListener("pause", updateVideoButton);
-        video.addEventListener("ended", updateVideoButton);
+        video.addEventListener("play", () => updateButton(videoBtn, video, "Play Video", "Pause Video"));
+        video.addEventListener("pause", () => updateButton(videoBtn, video, "Play Video", "Pause Video"));
+        video.addEventListener("ended", () => updateButton(videoBtn, video, "Play Video", "Pause Video"));
     </script>
 </body>
 </html>
