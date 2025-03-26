@@ -1,0 +1,99 @@
+/* Apply a different font family */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9; /* Light background for better readability */
+    color: #333; /* Dark text color */
+    margin: 0;
+    padding: 0;
+}
+
+/* Styling for header */
+header {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+}
+
+/* Styling for the content section */
+.content {
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #ddd; /* Light gray border */
+    background-color: #fff; /* White background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow effect */
+}
+
+.content h2 {
+    font-size: 2em;
+    color: #333; /* Dark text for headings */
+}
+
+/* Styling for the paragraph in content */
+.content p {
+    font-size: 1.2em;
+    line-height: 1.6;
+}
+
+/* Styling for images */
+img {
+    border-radius: 8px; /* Rounded corners for the image */
+    margin-top: 20px;
+    border: 3px solid #ddd; /* Light border around the image */
+    width: 100%; /* Makes the image responsive */
+    max-width: 600px; /* Limits the image size */
+}
+
+/* About Us section */
+.about-us {
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-us h2 {
+    font-size: 2em;
+    color: #333;
+}
+
+/* Contact Us section */
+.contact {
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact h2 {
+    font-size: 2em;
+    color: #333;
+}
+
+.contact a {
+    color: #4CAF50; /* Green color for links */
+    text-decoration: none;
+}
+
+.contact a:hover {
+    text-decoration: underline;
+}
+
+/* Footer styles */
+#footer {
+    background-color: #333; /* Dark background for the footer */
+    color: white;
+    padding: 10px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+#footer p {
+    font-size: 1.2em;
+}

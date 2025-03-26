@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessible Form Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        fieldset {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        legend {
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Validation feedback */
+        input:invalid {
+            border-color: #f44336;
+        }
+
+        input:valid {
+            border-color: #4CAF50;
+        }
+
+        .error-message {
+            color: #f44336;
+            font-size: 12px;
+            margin-top: -10px;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Sign Up Form</h1>
+
+    <form action="#" method="POST">
+        <fieldset>
+            <legend>Personal Information</legend>
+
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" name="first-name" required>
+            <div class="error-message" id="first-name-error"></div>
+
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" name="last-name" required>
+            <div class="error-message" id="last-name-error"></div>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error-message" id="email-error"></div>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" pattern="\d{3}-\d{3}-\d{4}" required>
+            <span class="help-text">Format: 123-456-7890</span>
+            <div class="error-message" id="phone-error"></div>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" minlength="8" required>
+            <div class="error-message" id="password-error"></div>
+
+            <button type="submit">Submit</button>
+        </fieldset>
+    </form>
+
+    <script>
+        // JavaScript to show error messages if validation fails
+        document.querySelector("form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Clear any previous error messages
+            const errorMessages = document.querySelectorAll(".error-message");
+            errorMessages.forEach(message => message.innerText = "");
+
+            // Check each input field and show an error if it's invalid
+            const firstName = document.getElementById("first-name");
+            if (!firstName.validity.valid) {
+                document.getElementById("first-name-error").innerText = "First name is required.";
+            }
+
+            const lastName = document.getElementById("last-name");
+            if (!lastName.validity.valid) {
+                document.getElementById("last-name-error").innerText = "Last name is required.";
+            }
+
+            const email = document.getElementById("email");
+            if (!email.validity.valid) {
+                document.getElementById("email-error").innerText = "Please enter a valid email address.";
+            }
+
+            const phone = document.getElementById("phone");
+            if (!phone.validity.valid) {
+                document.getElementById("phone-error").innerText = "Phone number must match the pattern 123-456-7890.";
+            }
+
+            const password = document.getElementById("password");
+            if (!password.validity.valid) {
+                document.getElementById("password-error").innerText = "Password must be at least 8 characters long.";
+            }
+
+            // If all inputs are valid, you can submit the form here (this is just a demo)
+            if (firstName.validity.valid && lastName.validity.valid && email.validity.valid && phone.validity.valid && password.validity.valid) {
+                alert("Form submitted successfully!");
+            }
+        });
+    </script>
+
+</body>
+</html>

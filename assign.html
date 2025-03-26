@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced HTML5 Elements and Forms</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1, h2 {
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f9;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Advanced HTML5 Elements and Forms</h1>
+    </header>
+
+    <div class="container">
+
+        <!-- Ordered List with Roman Numerals -->
+        <section>
+            <h2>Ordered List with Roman Numerals</h2>
+            <ol type="I">
+                <li>Introduction to HTML5</li>
+                <li>Adding Multimedia Elements</li>
+                <li>Building Accessible Forms</li>
+                <li>Responsive Design Practices</li>
+                <li>Form Validation Techniques</li>
+            </ol>
+        </section>
+
+        <!-- External Image from Pexels -->
+        <section>
+            <h2>Image Example</h2>
+            <img src="https://images.pexels.com/photos/46274/pexels-photo-46274.jpeg" alt="Nature Image" width="100%" style="border-radius: 8px;">
+        </section>
+
+        <!-- Table of 5 Contacts -->
+        <section>
+            <h2>Contacts Table</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>123 Elm St, NY</td>
+                        <td>+1 555-1234</td>
+                        <td>john@example.com</td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>456 Oak St, LA</td>
+                        <td>+1 555-5678</td>
+                        <td>jane@example.com</td>
+                    </tr>
+                    <tr>
+                        <td>Michael Johnson</td>
+                        <td>789 Pine St, SF</td>
+                        <td>+1 555-8765</td>
+                        <td>michael@example.com</td>
+                    </tr>
+                    <tr>
+                        <td>Emily Davis</td>
+                        <td>101 Maple St, Chicago</td>
+                        <td>+1 555-5432</td>
+                        <td>emily@example.com</td>
+                    </tr>
+                    <tr>
+                        <td>David Clark</td>
+                        <td>202 Birch St, Boston</td>
+                        <td>+1 555-6789</td>
+                        <td>david@example.com</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Registration Form -->
+        <section>
+            <h2>Registration Form</h2>
+            <form action="#" method="POST">
+                <label for="full-name">Full Name:</label>
+                <input type="text" id="full-name" name="full-name" placeholder="Enter your full name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required minlength="8">
+
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+
+                <label for="country">Country:</label>
+                <select id="country" name="country" required>
+                    <option value="" disabled selected>Select your country</option>
+                    <option value="Kenya">Kenya</option>
+                    <option value="Uganda">Uganda</option>
+                    <option value="Tanzania">Tanzania</option>
+                    <option value="Rwanda">Rwanda</option>
+                </select>
+
+                <fieldset>
+                    <legend>Gender:</legend>
+                    <label>
+                        <input type="radio" name="gender" value="Male" required> Male
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="Female"> Female
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="Other"> Other
+                    </label>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Interests:</legend>
+                    <label>
+                        <input type="checkbox" name="interests" value="Sports"> Sports
+                    </label>
+                    <label>
+                        <input type="checkbox" name="interests" value="Music"> Music
+                    </label>
+                    <label>
+                        <input type="checkbox" name="interests" value="Travel"> Travel
+                    </label>
+                </fieldset>
+
+                <button type="submit">Register</button>
+            </form>
+        </section>
+
+    </div>
+
+</body>
+</html>
