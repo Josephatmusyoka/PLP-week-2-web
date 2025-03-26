@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Media Playlist</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh; /* Prevents content from being cut off */
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .playlist-container {
+            width: 90%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            overflow-y: auto;
+            max-height: 90vh; /* Allows scrolling if content overflows */
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        /* Media Grid */
+        .media-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .media-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            cursor: grab;
+        }
+
+        video, audio {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Drag & Drop Indicator */
+        .dragging {
+            opacity: 0.5;
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 20px;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="playlist-container">
+        <h1>🎵 Interactive Media Playlist</h1>
+
+        <!-- Media Grid -->
+        <div class="media-section" id="playlist">
+            <!-- Media items will be loaded here dynamically -->
+        </div>
+
+        <!-- Navigation and Actions -->
+        <div class="controls">
+            <button class="btn" onclick="prevMedia()">⬅ Back</button>
+            <button class="btn" onclick="nextMedia()">Next ➡</button>
+            <button class="btn" onclick="savePlaylist()">💾 Save Order</button>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        let mediaElements = [];
+
+        const mediaList = [
+            { type: "video", title: "🎬 Video 1", src: "files/VID-20240618-WA0004.mp4" },
+            { type: "audio", title: "🎵 Audio 1", src: "files/godwill-babette---umenibeba.mp3" },
+            { type: "video", title: "🎬 Video 2", src: "files/sample-video.mp4" },
+            { type: "audio", title: "🎵 Audio 2", src: "files/sample-audio.mp3" },
+            { type: "video", title: "🎬 Video 3", src: "files/VID-20240618-WA0004.mp4" },
+            { type: "audio", title: "🎵 Audio 3", src: "files/godwill-babette---umenibeba.mp3" },
+            { type: "video", title: "🎬 Video 4", src: "files/VID-20240618-WA0004.mp4" },
+            { type: "audio", title: "🎵 Audio 4", src: "files/godwill-babette---umenibeba.mp3" },
+            { type: "video", title: "🎬 Video 5", src: "files/VID-20240618-WA0004.mp4" },
+            { type: "audio", title: "🎵 Audio 5", src: "files/godwill-babette---umenibeba.mp3" }
+        ];
+
+        const playlist = document.getElementById("playlist");
+
+        // Function to load media into the playlist
+        function loadPlaylist() {
+            playlist.innerHTML = "";
+            mediaList.forEach((media, index) => {
+                console.log(`Loading: ${media.title} - ${media.src}`); // Debugging
+                let mediaBox = document.createElement("div");
+                mediaBox.classList.add("media-box");
+                mediaBox.draggable = true;
+                mediaBox.innerHTML = `
+                    <h3>${media.title}</h3>
+                    ${media.type === "video" 
+                        ? `<video controls onended="playNext()"><source src="${media.src}" type="video/mp4"></video>` 
+                        : `<audio controls onended="playNext()"><source src="${media.src}" type="audio/mpeg"></audio>`}
+                `;
+                playlist.appendChild(mediaBox);
+            });
+
+            mediaElements = document.querySelectorAll(".media-box");
+            attachDragEvents();
+        }
+
+        // Play next media after one finishes
+        function playNext() {
+            if (currentIndex < mediaElements.length - 1) {
+                currentIndex++;
+                mediaElements[currentIndex].querySelector("video, audio").play();
+            }
+        }
+
+        // Navigation
+        function nextMedia() {
+            if (currentIndex < mediaElements.length - 1) {
+                mediaElements[currentIndex].querySelector("video, audio").pause();
+                currentIndex++;
+                mediaElements[currentIndex].querySelector("video, audio").play();
+            }
+        }
+
+        function prevMedia() {
+            if (currentIndex > 0) {
+                mediaElements[currentIndex].querySelector("video, audio").pause();
+                currentIndex--;
+                mediaElements[currentIndex].querySelector("video, audio").play();
+            }
+        }
+
+        // Drag & Drop to rearrange
+        function attachDragEvents() {
+            let draggedItem = null;
+
+            document.querySelectorAll(".media-box").forEach((box) => {
+                box.addEventListener("dragstart", (e) => {
+                    draggedItem = e.target;
+                    setTimeout(() => e.target.classList.add("dragging"), 0);
+                });
+
+                box.addEventListener("dragend", (e) => {
+                    e.target.classList.remove("dragging");
+                });
+            });
+
+            playlist.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(playlist, e.clientY);
+                if (afterElement == null) {
+                    playlist.appendChild(draggedItem);
+                } else {
+                    playlist.insertBefore(draggedItem, afterElement);
+                }
+            });
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll(".media-box:not(.dragging)")];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                return offset < 0 && offset > closest.offset ? { offset, element: child } : closest;
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        // Load Playlist on Page Load
+        window.addEventListener("load", loadPlaylist);
+    </script>
+</body>
+</html>

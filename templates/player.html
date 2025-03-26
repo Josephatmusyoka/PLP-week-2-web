@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Media Player</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background: #121212;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background: #1e1e1e;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 2px solid #ff4081;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .media-list {
+            list-style: none;
+            padding: 0;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .media-list li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background 0.3s;
+        }
+
+        .media-list li:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Player Area */
+        .player-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .media-box {
+            width: 600px;
+            max-width: 90%;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        video, audio {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .controls button {
+            background: #ff4081;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .controls button:hover {
+            background: #e91e63;
+        }
+
+        .active {
+            background: rgba(255, 255, 255, 0.3) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>🎵 Media Playlist</h2>
+        <ul class="media-list" id="mediaList"></ul>
+    </div>
+
+    <!-- Player Area -->
+    <div class="player-container">
+        <h1 id="nowPlaying">Now Playing: None</h1>
+        <div class="media-box" id="mediaBox"></div>
+        <div class="controls">
+            <button onclick="prevMedia()">⏮️ Prev</button>
+            <button onclick="togglePlayPause()">▶️ Play</button>
+            <button onclick="nextMedia()">⏭️ Next</button>
+            <button onclick="toggleShuffle()">🔀 Shuffle</button>
+            <button onclick="toggleLoop()">🔁 Loop</button>
+        </div>
+    </div>
+
+    <script>
+        let mediaFiles = [];
+        let currentIndex = 0;
+        let isShuffling = false;
+        let isLooping = false;
+        let mediaElement = null;
+
+        async function loadMediaList() {
+            try {
+                const response = await fetch('/get_media/1');  // Fetch first page
+                let data = await response.json();
+                console.log("Media Response:", data); // Debugging Output
+
+                // Extract file list correctly
+                mediaFiles = data.files || [];  // Ensure it's an array
+
+                const mediaList = document.getElementById('mediaList');
+                mediaList.innerHTML = '';
+
+                mediaFiles.forEach((file, index) => {
+                    let li = document.createElement('li');
+                    li.textContent = file.filename; // Display filename
+                    li.onclick = () => playMedia(index);
+                    mediaList.appendChild(li);
+                });
+
+                if (mediaFiles.length > 0) {
+                    playMedia(0); // Auto-play first file
+                }
+            } catch (error) {
+                console.error("Error loading media:", error);
+            }
+        }
+
+        function playMedia(index) {
+            currentIndex = index;
+            const file = mediaFiles[index];
+
+            document.getElementById("nowPlaying").textContent = "Now Playing: " + file.filename;
+
+            let mediaBox = document.getElementById('mediaBox');
+            mediaBox.innerHTML = ''; // Clear previous media
+
+            if (file.filename.endsWith('.mp4') || file.filename.endsWith('.ogg')) {
+                mediaElement = document.createElement('video');
+                mediaElement.controls = true;
+                mediaElement.innerHTML = `<source src="/media/${encodeURIComponent(file.path)}" type="video/mp4">`;
+            } else {
+                mediaElement = document.createElement('audio');
+                mediaElement.controls = true;
+                mediaElement.innerHTML = `<source src="/media/${encodeURIComponent(file.path)}" type="audio/mpeg">`;
+            }
+
+            mediaBox.appendChild(mediaElement);
+            mediaElement.play();
+        }
+
+        function prevMedia() {
+            currentIndex = (currentIndex - 1 + mediaFiles.length) % mediaFiles.length;
+            playMedia(currentIndex);
+        }
+
+        function nextMedia() {
+            if (isShuffling) {
+                currentIndex = Math.floor(Math.random() * mediaFiles.length);
+            } else {
+                currentIndex = (currentIndex + 1) % mediaFiles.length;
+            }
+            playMedia(currentIndex);
+        }
+
+        function togglePlayPause() {
+            if (mediaElement.paused) {
+                mediaElement.play();
+            } else {
+                mediaElement.pause();
+            }
+        }
+
+        function toggleShuffle() {
+            isShuffling = !isShuffling;
+            alert(isShuffling ? "Shuffle ON" : "Shuffle OFF");
+        }
+
+        function toggleLoop() {
+            isLooping = !isLooping;
+            mediaElement.loop = isLooping;
+            alert(isLooping ? "Loop ON" : "Loop OFF");
+        }
+
+        window.onload = loadMediaList;
+    </script>
+
+</body>
+</html>
